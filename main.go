@@ -17,10 +17,16 @@ func main() {
 	}
 	// Initialize the database connection
 	database.Connect()
+	// Run database migration
+	database.RunMigration()
 	// Initialize the router
 	router := gin.Default()
 	// Set up routes
-	router.POST("/bioskop", handlers.CreateBioskopHandler)
+	router.POST("/bioskop", handlers.CreateBioskop)
+	router.GET("/bioskop", handlers.GetAllBioskop)
+	router.GET("/bioskop/:id", handlers.GetBioskopByID)
+	router.PUT("/bioskop/:id", handlers.UpdateBioskop)
+	router.DELETE("/bioskop/:id", handlers.DeleteBioskop)
 	// Start the server
 	// Listen and serve on port 8080
 	router.Run(":8080")

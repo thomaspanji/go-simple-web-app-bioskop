@@ -16,22 +16,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: update_updated_at_column(); Type: FUNCTION; Schema: public; Owner: bioskop_admin
---
-
-CREATE FUNCTION public.update_updated_at_column() RETURNS trigger
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-   NEW.updated_at = CURRENT_TIMESTAMP;
-   RETURN NEW;
-END;
-$$;
-
-
-ALTER FUNCTION public.update_updated_at_column() OWNER TO bioskop_admin;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -45,8 +29,8 @@ CREATE TABLE public.bioskop (
     nama character varying(255) NOT NULL,
     lokasi character varying(255) NOT NULL,
     rating double precision NOT NULL,
-    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -75,18 +59,6 @@ ALTER SEQUENCE public.bioskop_id_seq OWNED BY public.bioskop.id;
 
 
 --
--- Name: gorp_migrations; Type: TABLE; Schema: public; Owner: bioskop_admin
---
-
-CREATE TABLE public.gorp_migrations (
-    id text NOT NULL,
-    applied_at timestamp with time zone
-);
-
-
-ALTER TABLE public.gorp_migrations OWNER TO bioskop_admin;
-
---
 -- Name: bioskop id; Type: DEFAULT; Schema: public; Owner: bioskop_admin
 --
 
@@ -98,19 +70,13 @@ ALTER TABLE ONLY public.bioskop ALTER COLUMN id SET DEFAULT nextval('public.bios
 --
 
 COPY public.bioskop (id, nama, lokasi, rating, created_at, updated_at) FROM stdin;
-1	Pondok Indah Mall 1 XXI	Jakarta	4.6	2025-04-11 11:12:00.130096+07	2025-04-11 11:17:22.794878+07
-2	Empire XXI	Bandung	4.5	2025-04-11 11:15:00.942967+07	2025-04-11 11:18:18.311562+07
-3	Cinépolis Istana Plaza	Bandung	4.4	2025-04-11 11:19:14.065761+07	2025-04-11 11:19:14.065761+07
-4	CGV Vivo Mall Sentul	Bogor	4.7	2025-04-11 11:19:45.709905+07	2025-04-11 11:19:45.709905+07
-\.
-
-
---
--- Data for Name: gorp_migrations; Type: TABLE DATA; Schema: public; Owner: bioskop_admin
---
-
-COPY public.gorp_migrations (id, applied_at) FROM stdin;
-001_initial_create_table.sql	2025-04-11 11:10:47.094297+07
+1	Empire XXI	Bandung	4.5	2025-04-10 02:14:51.917425	2025-04-10 02:14:51.917425
+4	CGV Miko Mall	Bandung	4.4	2025-04-10 09:14:58.5246	2025-04-10 09:14:58.5246
+5	CGV Vivo Mall Sentul	Bogor	4.7	2025-04-10 09:16:20.563949	2025-04-10 09:16:20.563949
+6	Cinépolis Istana Plaza	Bandung	4.4	2025-04-10 09:19:46.461261	2025-04-10 09:19:46.461261
+7	Cinépolis Q Mall Banjarbaru	Banjarbaru	4.5	2025-04-10 09:21:42.445754	2025-04-10 09:21:42.445754
+8	Metropole XXI	Jakarta	4.6	2025-04-10 09:40:24.64648	2025-04-10 09:40:24.64648
+9	 Pondok Indah Mall 1 XXI    	Jakarta 	4.6	2025-04-10 09:49:41.39277	2025-04-10 09:49:41.39277
 \.
 
 
@@ -118,7 +84,7 @@ COPY public.gorp_migrations (id, applied_at) FROM stdin;
 -- Name: bioskop_id_seq; Type: SEQUENCE SET; Schema: public; Owner: bioskop_admin
 --
 
-SELECT pg_catalog.setval('public.bioskop_id_seq', 5, true);
+SELECT pg_catalog.setval('public.bioskop_id_seq', 9, true);
 
 
 --
@@ -127,21 +93,6 @@ SELECT pg_catalog.setval('public.bioskop_id_seq', 5, true);
 
 ALTER TABLE ONLY public.bioskop
     ADD CONSTRAINT bioskop_pkey PRIMARY KEY (id);
-
-
---
--- Name: gorp_migrations gorp_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: bioskop_admin
---
-
-ALTER TABLE ONLY public.gorp_migrations
-    ADD CONSTRAINT gorp_migrations_pkey PRIMARY KEY (id);
-
-
---
--- Name: bioskop set_updated_at; Type: TRIGGER; Schema: public; Owner: bioskop_admin
---
-
-CREATE TRIGGER set_updated_at BEFORE UPDATE ON public.bioskop FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
 
 
 --

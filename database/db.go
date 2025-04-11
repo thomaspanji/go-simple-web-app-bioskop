@@ -30,24 +30,8 @@ func Connect() {
 		log.Fatal("Failed to connect to the database:", err)
 	}
 	// Check if the connection is successful
-	err = DB.Ping()
-	if err != nil {
-		log.Fatal("Database unreachable:", err)
-	}
 
-	// Create the bioskop table if it doesn't exist
-	createTableQuery := `
-	CREATE TABLE IF NOT EXISTS bioskop (
-		id SERIAL PRIMARY KEY,
-		nama VARCHAR(255) NOT NULL,
-		lokasi VARCHAR(255) NOT NULL,
-		rating FLOAT NOT NULL,
-		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-		updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-		);
-	`
-	_, err = DB.Exec(createTableQuery)
-	if err != nil {
-		log.Fatal("Failed to create bioskop table:", err)
+	if err = DB.Ping(); err != nil {
+		log.Fatal("Database unreachable:", err)
 	}
 }
